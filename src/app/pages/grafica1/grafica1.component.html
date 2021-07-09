@@ -1,1 +1,29 @@
-<p>grafica1 works!</p>
+<div class="row">
+  <div class="col-6">
+     <!-- recuerda que al mandar la informacion en [] es mandar el valor y no un string 
+             mandando la informacion a las graficas las primeras propiedades que estan entre [] son las que estan en mi componente hijo app-dona-compopnent y el segundo es el que esta en este componente   
+        -->
+        <app-dona 
+                  [title]="title"
+
+                  [doughnutChartLabels]="doughnutChartLabels"
+                  [doughnutChartData]="doughnutChartData"
+                  [colors]="colors" >
+        </app-dona>
+
+   
+  </div>
+  <div class="col-6">
+    
+ <!-- recuerda que al mandar la informacion en [] es mandar el valor y no un string 
+             mandando la informacion a las graficas las primeras propiedades que estan entre [] son las que estan en mi componente hijo app-grafica-barra y el segundo es el que esta en este componente   
+        -->
+  <app-dona 
+            [doughnutChartLabels]="doughnutChartLabels1"
+            [doughnutChartData]="doughnutChartData1"
+            [colors]="colors1" >
+  </app-dona>
+
+
+</div>
+</div>
