@@ -10,7 +10,7 @@ export class ProgressComponent {
 
   progreso1 = 25;
   progreso2 = 35
-  
+  // el get es casi igual a una propiedad de ts simplemente estoy regresando el valor a como lo necesito en html
   get getProgreso1(){
     return `${this.progreso1}%`;
   }

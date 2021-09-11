@@ -5,7 +5,7 @@ Email: niravjoshi87@gmail.com
 File: js
 */
 
-customInitFunctions = () => {
+const customInitFunctions = () => {
     $(function() {
         "use strict";
         $(function() {
@@ -157,5 +157,6 @@ customInitFunctions = () => {
         });
     
     });
-};
+}
+
 customInitFunctions();
