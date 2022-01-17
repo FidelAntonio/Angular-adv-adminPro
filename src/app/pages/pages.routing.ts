@@ -7,12 +7,15 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 // nota en la data podemos mandar cualquier argumento que necesitemos
+// todas estas rutas no deben de verse a menos que este autentificado 
 const routes: Routes = [
   {
     path: 'dashboard',
     component: PagesComponent,
+    canActivate:[AuthGuard],
     children: [
       {
         path: '',
