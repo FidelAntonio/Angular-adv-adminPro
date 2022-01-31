@@ -6,7 +6,8 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
+import { Usuario } from '../models/usuario.model';
 
 const base_url = environment.base_url;
 declare const gapi:any;
@@ -15,9 +16,17 @@ declare const gapi:any;
 })
 export class UsuarioService {
   public auth2:any;
+  public usuario!: Usuario;
   constructor(private http: HttpClient,private router:Router,private ngZone:NgZone) {
     // los servicios en angular son singleton es decir  solo se va a ejecutar una unica vez cada vez que se recarga la aplicacion completamente o cuando entre por primera vez a la aplicacion
     this.initGoogle();
+  }
+  // es mejor hacer el get que estar declarando  el token a cada rato
+  get token():string{
+    return localStorage.getItem('token') || '';
+  }
+  get uid():string {
+    return this.usuario.uid || '';
   }
   initGoogle(){
      // las promesas siempre se van a ejecutar
@@ -47,20 +56,29 @@ export class UsuarioService {
   }
   // validar token
   ValidarToken():Observable<boolean>{
-    const token = localStorage.getItem('token') || '';
+    // const token = localStorage.getItem('token') || '';
     return this.http.get(`${base_url}/login/renew`,{
       headers:{
-        'x-token':token
+        'x-token':this.token
       }
     }).pipe(
-      tap((resp:any)=>{
+      map((resp:any)=>{
+        // desestructurando el obj
+        const {nombre,email,img = '',google,role,uid} = resp.usuario;
+        // creando la instancia de usuario
+        this.usuario = new Usuario(nombre,email,'',img ,google,role,uid);
+        this.usuario.impirmirUsuario();
         // guardando el nuevo token en el localStorage
         localStorage.setItem('token', resp.token);
+        return true
       }),
       // convirtiendo la resp en un booleano
-      map(reps=> true),
+      // map(reps=> true),
       // capturamos el error y lo combertimos en un obs y quiere decir que no logro la autentificacion
-      catchError(error =>of(false))
+      catchError(error => {
+        console.log(error);
+        return of(false)
+      })
     )
   }
   crearUsuario(formData: RegisterForm) {
@@ -71,6 +89,18 @@ export class UsuarioService {
         localStorage.setItem('token', resp.token);
       })
     );
+  }
+// se puede hacer esta esta forma o crear su interface
+  actualizarPerfil(data:{usuario:string,email:string,role:string}){
+    data={
+      ...data,// todo lo que tenga data usuario y email que vienen del form
+      role: this.usuario.role // y aqui le agrego otra propiedad
+    }
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data,{
+      headers:{
+        'x-token':this.token
+      }
+    })
   }
 
   login(formData: LoginForm) {

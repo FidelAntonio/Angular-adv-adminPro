@@ -8,6 +8,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 // nota en la data podemos mandar cualquier argumento que necesitemos
 // todas estas rutas no deben de verse a menos que este autentificado 
@@ -43,6 +44,7 @@ const routes: Routes = [
         data: { titulo: 'Promesas' },
       },
       { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Rxjs' } },
+      { path: 'perfil', component: PerfilComponent, data: { titulo: 'Perfil' } },
     ],
   },
 ];
